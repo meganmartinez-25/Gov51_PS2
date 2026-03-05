@@ -1,0 +1,284 @@
+---
+title: "Gov 51-PS2"
+format: pdf
+editor: visual
+---
+
+```{r}
+#Initial Push Command 
+library(tidyverse)
+gay<-read.csv("data/raw/gay.csv")
+gay_reshaped <- read.csv("data/raw/gayreshaped.csv")
+ccap_2012 <-read.csv("data/raw/ccap2012.csv")
+
+gay
+
+
+
+```
+
+Question 1:
+
+```{r}
+nrow(gay)
+head(gay)
+unique(gay$study)
+
+gay
+
+```
+
+P1: There are 69592 observations.
+
+P2: This study takes on two unique values.
+
+P3: The treatment conditions are "No Contact," "Recycling Script by Gay Canvassers," "Same-Sex Marriage Script by Gay Canvassers, "Recycling Script by Straight Canvassers," and "Same-Sex Marriage Script by Straight Canvassers."
+
+Q1.2 :
+
+```{r}
+gay_updated <- gay |> 
+  filter(study == 1, wave ==1 ) |> 
+  group_by(treatment) |> 
+  summarize(mean_ssm = mean(ssm, na.rm = TRUE), 
+            sd_ssm = sd(ssm, na.rm = TRUE))
+
+gay_updated
+
+names(gay)
+
+
+```
+
+Q1.2 Recycling Script by Gay Canvasser was the treatment with the highest ssm of 3.13.
+
+Q1.3: Yes, the standard deviations are about the same as one another, which is important for a randomized sample because this means that there is not much variation between the groups, otherwise, if there is a standard deviation higher than the others, then there would likely be outliers impacting a group, and therefore, it would be difficult to say that each group would be an accurate comparison of one another.
+
+Q1.4- Data Table and Bar Graph
+
+```{r}
+gay_stats <- gay_updated |> 
+  knitr::kable(caption = "Summary Statistics for Gay Sample by Treatment",
+               format = "latex", 
+               booktabs = TRUE,
+               digits = 2)
+               
+gay_updatedstats
+
+
+
+gay_updatedRE <- gay_updated %>% 
+  mutate(treatment = case_when(
+    treatment == "No Contact" ~ "NO", 
+    treatment == "Recycling Script by Gay Canvasser" ~ "Rec-Gay",
+    treatment == "Same-Sex Marriage Script by Gay Canvasser" ~ "Same-Gay",
+    treatment == "Recycling Script by Straight Canvasser" ~ "Rec-Strt", 
+    treatment == "Same-Sex Marriage Script by Straight Canvasser" ~ "Same-Strt"))
+
+gay_plot <- ggplot(gay_updatedRE, aes(x = treatment, y =`mean_ssm`)) +
+  geom_col()+ 
+  coord_cartesian(ylim = c(0,5))+
+  labs(x = "Treatment Groups",
+       y = "Means of Same-Sex Marriage Attitudes ",
+       title = "Mean of Same-Sex Marriage Attitudes for Different Treatment Groups ")
+
+gay_plot
+
+
+```
+
+```{r}
+gay_updated <- gay |> 
+  filter(study == 1, wave ==1 ) |> 
+  group_by(treatment) |> 
+  summarize(mean_ssm = mean(ssm, na.rm = TRUE), 
+            sd_ssm = sd(ssm, na.rm = TRUE))
+
+mean_Gay <- gay_updated |> 
+  filter(treatment == "Same-Sex Marriage Script by Gay Canvasser") |> 
+  pull(mean_ssm)
+  
+mean_NO <- gay_updated |> 
+  filter(treatment == "No Contact") |> 
+  pull(mean_ssm)
+
+sd_Gay <- gay_updated |> 
+  filter(treatment == "Same-Sex Marriage Script by Gay Canvasser") |> 
+  pull(sd_ssm)
+  
+sd_NO <- gay_updated |> 
+  filter(treatment == "No Contact") |> 
+  pull(sd_ssm)
+
+gay_updated 
+
+stan_diff <- (mean_Gay - mean_NO) / (((sd_Gay + sd_NO)^(1/2))/2)
+
+stan_diff
+```
+
+Yes, the standardized difference in absolute values is .192075, which is less than .25. This untilimately means that there is a good balance between the groups, and at their baseline they are similar.
+
+Q1.6 (do we want only diff in means not standardized)?
+
+```{r}
+
+gay_updated2 <- gay |> 
+  filter(study == 1, wave ==2 ) |> 
+  group_by(treatment) |> 
+  summarize(mean_ssm = mean(ssm, na.rm = TRUE), 
+            sd_ssm = sd(ssm, na.rm = TRUE))
+
+gay_updated2
+
+```
+
+The difference in means for the same-sex marriage script by gay canvassers versus the no contact group is -0.099874. Because this difference is .08 larger than the difference for the wave 1 group, this indicates that there is likely larger differences in people's ssm, however, this is a very small difference. Even a mere .09 difference does not really have a large impact on someone's ssm, so these groups are also likely similar at baseline.
+
+Part 2:
+
+```{r}
+gay_reshaped <- read.csv("data/raw/gayreshaped.csv")
+ccap_2012 <-read.csv("data/raw/ccap2012.csv")
+
+nrow(gay_reshaped)
+names(gay_reshaped)
+nrow(ccap_2012)
+names(ccap_2012)
+```
+
+There are 11948 observations in gay_reshaped, and 43998 observations in ccap_2012. The names of the columns of gay_reshaped are "study", "treatment", "therm1", "tehrm2", "therm3", and "therm4." The names of the columns for ccap_2012, are "X", "caseid" and "gaytherm".
+
+```{r}
+gay_reshapedNEW <- gay_reshaped |> 
+  filter(study == 1) |> 
+  summarize(mean_therm1 = mean(therm1, na.rm = TRUE), 
+            med_therm1 = median(therm1, na.rm = TRUE), 
+            sd_therm1 = sd(therm1, na.rm = TRUE))
+
+ccap_2012NEW <- ccap_2012 |> 
+  summarize(mean_gaytherm = mean(gaytherm, na.rm = TRUE), 
+            median_gaytherm = median(gaytherm, na.rm = TRUE), 
+            sd_gaytherm = sd(gaytherm, na.rm = TRUE))
+
+gay_reshapedNEW
+ccap_2012NEW
+```
+
+There is not much difference between the two statistics. There is only a 0.32892 difference between the means, a 2.0 difference between the medians, and a .86604 difference between the standard deviations.
+
+```{r}
+LaCour <- data.frame(therm = gay_reshaped$therm1, na.rm= TRUE,  source = "LaCour Study 1")
+CCAP <- data.frame(therm = ccap_2012$gaytherm, na.rm = TRUE,  source = "CCAP Study")
+
+combined_datasets <- bind_rows(LaCour, CCAP)
+
+ggplot(combined_datasets, aes(x= therm)) + 
+  geom_histogram(breaks = seq(0,100, by = 5), fill = "steelblue") + 
+  facet_wrap(~ source, scales = "free_y" ) + 
+  labs(title = "Thermometers for Same-Sex Marriage:
+       Lacour & CCAP", 
+       x= "Thermometer Rating", 
+       y = "Frequency")
+
+
+```
+
+I would argue that they look like they come from the same data because they have matching peaks and heapings, and follow a similar curvature. It appears that the ccap_2012 data sample is much larger than the LaCour sample, but while the LaCour does not have as large of peaks and bins, it matches roughly the same.
+
+2.2: Re-Test Reliability
+
+```{r}
+LaCour1_control <- gay_reshaped |> 
+  filter(study == 1) |> 
+  filter (treatment == "No Contact")
+LaCour2_control <- gay_reshaped |> 
+  filter(study == 2) |> 
+  filter (treatment == "No Contact")
+
+LaCour1_control
+LaCour2_control
+
+cor(LaCour1_control$therm1, LaCour1_control$therm2, use = "complete.obs")
+
+cor(LaCour2_control$therm1, LaCour2_control$therm2, use = "complete.obs")
+
+within_chg1 <- LaCour1_control$therm2 - LaCour1_control$therm1 
+
+sd(within_chg1, na.rm = TRUE)
+
+within_chg2 <- LaCour2_control$therm2 - LaCour2_control$therm1 
+
+sd(within_chg2, na.rm = TRUE)
+
+
+```
+
+The correlation between therm1 and therm2 for Study 1 is .998 which is extremely high. The correlation between therm 1 and therm 2 for study two is only .973. The standard deviation of the within-person change is 1.98 for the first study, and 6.60 for the second study.
+
+Study 2 shows a more plausible pattern because the therm temperatures appear too close to be coincidental for study 1. With a correlation that is almost 1, and low standrad deviation, this means that the data itself is basically identical for each group. However, this is not logical because even if groups are randomized and are intended to be close to one another, no two people are going to respond the same, and as a result, it would be improbable to get a standard deviation so low and a correlation so high. Therefore, study 1 is most likely forged, and study 2, which has higher variation in the data is more likely to represent real responses.
+
+Q2.5
+
+```{r}
+combined_control <- gay_reshaped |> 
+  filter(study %in% c(1,2)) |> 
+    filter(treatment == "No Contact")
+
+ggplot (combined_control,
+        aes ( x = therm1 , y = therm2 ))+
+  geom_point (color = " steelblue ", size = .2, alpha = .3) +
+  facet_wrap(~ study ) +
+  labs ( x = "Therm 1", y = "Therm 2",
+         title = "Comparing Correlations of Therm Groups for Each Study" ) + 
+  geom_abline(intercept= 0, slope = 1, color = "red", linetype = "dashed")
+```
+
+Study 2 looks like real longutudinal data because there is actually variation across the data. In Study 1, it appears as a fitted line with heapings at 50 and 100, but it is too perfectly along the 45 degree angle. Study 2 appears ot actually have a variety of responses, which is more likely when you get a random sample of people with different opinions or perspectives.
+
+Q2.3
+
+Part 3:
+
+Q3.1
+
+```{r}
+
+gay_reshapedUPDATE<- gay_reshaped |> 
+  filter(study == 2) 
+
+nrow(gay_reshapedUPDATE)
+
+gay_reshapedUPDATE
+
+names(gay_reshapedUPDATE$treatment)
+gay_statsUPDATE <-gay_reshapedUPDATE |>
+  group_by(treatment) |> 
+  summarize(mean_therm1 = mean(therm1, na.rm = TRUE), 
+            sd_therm1 = sd(therm1, na.rm = TRUE))
+  
+gay_statsUPDATE
+
+
+
+
+
+```
+
+There are 2441 observations. The mean of therm1 for the control group is 57.87. The mean for the treatment group is 59.35. The standard deviation for the control group is 28.69. The standard deviation for the treatment group is 28.42.
+
+Q 3.2
+
+```{r}
+combined_study <- gay_reshaped |> 
+  filter(study %in% c(1,2)) 
+
+
+ggplot(combined_study, aes(x= therm1)) + 
+  geom_histogram(breaks = seq(0,100, by = 5), fill = "steelblue") + 
+  facet_wrap(~ study,  ) + 
+  labs(title = "Thermometers for Same-Sex Marriage:
+       Study 1 and 2 ", 
+       x= "Thermometer Rating", 
+       y = "Frequency")
+```
