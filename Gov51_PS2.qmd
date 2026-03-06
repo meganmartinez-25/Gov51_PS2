@@ -297,7 +297,7 @@ Study 2 looks like real longutudinal data because there is actually variation ac
 
 Q2.6
 
-These three findings suggest that the data was fabricated because STudy 1, across correlation, standard deviation, and
+These three findings suggest that the data was fabricated because Study 1, across correlation, standard deviation, and
 
 The three irregularities are that the LaCour data matches the mean and standard deviations very closely to the CCAP, with the LaCour mean at 58.4, and the CCAP mean at 58.7, and their standard deviations were 28.5 for LaCour vs. 29.4 for CCAP. The correlations for the LaCour data versus the study 2, show that LaCour had an almost 1.0 correlation which is very unlikely to occur wieth real data because real data has more varaition and noise. Lastly, the standard deviation was extremely small for LaCour and as we saw in the graph, there was not much variation in the data points themselves, so a lack of variation indicates fabricated data. A fabricater would most likely manipulate the data by taking the CCAP as a base and simply adding noise as a way to make it appear as if it was a real survey, even though it was not.
 
@@ -454,7 +454,7 @@ print(diff_means)
 
 ```
 
-The mean for therm2 for the control group or "No Contact" is 57.886, and the mean for the treatment group or those who had a conversation is 59.35057. The difference between therm 1 and therm 2 for each of the groups is 0. The difference between the gay canvasser vs. no contact is 1.464447.
+The mean for therm2 for the control group or "No Contact" is 57.886, and the mean for the treatment group or those who had a conversation is 59.35057. The difference between therm 1 and therm 2 for each of the groups is 0. The difference between the gay canvasser vs. no contact is 3.57.
 
 Q3.5 :
 
@@ -495,17 +495,19 @@ cor(gay_filtered$therm1,gay_filtered$therm4, use = "complete.obs" )
   
 ```
 
-No, correlations do no decay over time. This tells us that real survey measurements ebb and flow and do not always follow predictive patterns, but rather match the behavior of humans which can be random.
+No, correlations do no decay over time. This tells us that real survey measurements ebb and flow and do not always follow predictive patterns, but rather match the behavior of humans which can be random. There are fluctuations with the correlations.
 
 3.7
 
-We can use the simple tools to
+We can use the simple tools, means, standard deviation, correlation, and histograms in order to see if data was fabricated.
 
-Study 2 is much less exact and precise and Study 1's data. The mean and standard deviations have much more variability, especially between the thermometers before and after receiving a treatment
+Study 2 is more realistic than Study 1's data. The mean and standard deviations have much more variability, especially between the thermometers before and after receiving a treatment.
+
+The new standard deviation is 6.61, which showcases much more variability than the original standard deviation of 1.99, which indicates that the Study 2 has much more variation and noise.
 
 It is important that real treatment effects are smaller and messier than fabricated ones, because it reflects the actual opinions of real humans which have a lot of variability. Otherwise, there is no way to compare a sample and suggest that its patterns reflect a large population.
 
-Means and standard deviations told us a lot about the data itself, and how much variation was within it, and a low standard deviation indicated not a lot of variety across the data which could indicate fabrication. Histograms and correlations showed us how almost too perfectly the data followed the OLS and was close to that perfect 1.0 correlation, which is both improbable, but would not occur at all for a diverse sample, unless it was fabricated, which these tools aided us in discovering.
+Means and standard deviations told us a lot about the data itself, and how much variation was within it, and a low standard deviation indicated not a lot of variety across the data which could indicate fabrication. Histograms and correlations showed us how almost too perfectly the data followed the line of best fit and was close to that perfect 1.0 correlation, which is both improbable, but would not occur at all for a diverse sample, unless it was fabricated, which these tools aided us in discovering. The new correlation is. .973 which indicates much more variation, which is more representative of humans and their opinions.
 
 Q4.1
 
@@ -556,9 +558,9 @@ summary(fit_s3)
 
 The mean is 3.5679, while the intercept is 57.6352. The p-value is .00412. The standard error is 28.67.
 
-Bo estimates the intercept, or the predicted value of therm2, when "treated" = 0, or we are looking at the control group. Therefore, Bo is the predicted thermometer2 for the control group.
+B-hat 0 estimates the intercept, or the predicted value of therm2, when "treated" = 0, or we are looking at the control group. Therefore, B-hat 0 is the predicted thermometer2 for the control group, it is the intercept
 
-Yes, the difference between groups is statistically significant because the p-value is less than .05, and the t-statistic is greater than 1.96.
+Yes, the difference between groups is statistically significant because the p-value is less than .05 because its is .004 and the t-statistic is greater than 1.96.
 
 Q4.4 :
 
@@ -590,3 +592,5 @@ p_a - p_b
 ```
 
 r^2\ without\ therm1\ was\ 0.00339,\ while\ the\ r\^2\ with\ therm1\ is\ 0.9249.^
+
+Adding the therm 1 changes the R\^2 so drastically because by adding the initial of the thermometer is likely to explain how they might change as a result of the treatment more. This is crucial because this is explaining more about the variation of the data, and this tells us that a lot more of teh variation is explained by adding baseline attitudes. The predicted difference is 2.46.
