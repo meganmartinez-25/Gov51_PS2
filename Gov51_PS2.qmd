@@ -401,7 +401,7 @@ st_diff
 
 ```
 
-For the most part, these groups look balanced, but there is slight variation between the group that received the script and those who did not. However, it is not drastic, and on the net, both the means and standard deviations are very close to one another.
+For the most part, these groups look balanced, but there is slight variation between the group that received the script and those who did not. However, it is not drastic, and on the net, both the means and standard deviations are very close to one another. The standardized difference is .05 which is very small.
 
 Q3.4 :
 
@@ -481,9 +481,9 @@ CI_neg
 
 ```
 
-The standard error of the difference in post-period means is 1.156183.
+The standard error of the difference in post-period means is 1.24.
 
-The confidence interval is (-0.802, 3.73). Yes, the confidence interval includes zero. Because the confidence interval contains zero, this means that there is not convincing evidence that conversations with gay canvassers on same-sex marriage may not change attitudes towards same-sex marriage. We cannot be certain of the effects of the treatment, these results that we are seeing could be cause by random chance.
+The confidence interval is (1.13, 6). No, the confidence interval includes zero. Because the confidence interval does contains zero, this means that there is convincing evidence that conversations with gay canvassers on same-sex marriage may change attitudes towards same-sex marriage. We can be certain of the effects of the treatment, these results that we are seeing could not be cause by random chance.
 
 Q3.6
 
